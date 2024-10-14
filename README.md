@@ -1,121 +1,97 @@
-BẮT ĐẦU
+# Định nghĩa Node
+Cấu trúc Node:
+    - data: SỐ NGUYÊN
+    - next: CON TRỎ ĐẾN Node
 
-ĐỊNH NGHĨA Node
-    data: SỐ NGUYÊN
-    next: CON TRỎ ĐẾN Node
-KẾT THÚC ĐỊNH NGHĨA
+# Hàm tạo Node mới
+Hàm createNode(data):
+    new_node = CẤP PHÁT BỘ NHỚ CHO Node
+    new_node.data = data
+    new_node.next = NULL
+    TRẢ VỀ new_node
 
-HÀM createNode(data: SỐ NGUYÊN) TRẢ VỀ CON TRỎ ĐẾN Node
-    newNode = CẤP PHÁT BỘ NHỚ CHO Node
-    newNode.data = data
-    newNode.next = NULL
-    TRẢ VỀ newNode
-KẾT THÚC HÀM
-
-HÀM insert(head: CON TRỎ ĐẾN Node, data: SỐ NGUYÊN) TRẢ VỀ CON TRỎ ĐẾN Node
-    newNode = createNode(data)
-    NẾU head BẰNG NULL THÌ
-        head = newNode
+# Hàm chèn Node mới vào danh sách
+Hàm insert(head, data):
+    new_node = createNode(data)
+    NẾU head RỖNG:
+        head = new_node
         TRẢ VỀ head
-    KẾT THÚC NẾU
-    tmp = head
-    KHI tmp.next KHÔNG BẰNG NULL THÌ
-        tmp = tmp.next
-    KẾT THÚC KHI
-    tmp.next = newNode
+    current_node = head
+    KHI current_node.next KHÔNG RỖNG:
+        current_node = current_node.next
+    current_node.next = new_node
     TRẢ VỀ head
-KẾT THÚC HÀM
 
-HÀM isPrime(n: SỐ NGUYÊN) TRẢ VỀ SỐ NGUYÊN
-    NẾU n < 2 THÌ TRẢ VỀ 0
-    CHO i TỪ 2 ĐẾN CĂN BẬC HAI CỦA n LÀM TĂNG DẦN
-        NẾU n % i BẰNG 0 THÌ TRẢ VỀ 0
-    KẾT THÚC CHO
-    TRẢ VỀ 1
-KẾT THÚC HÀM
+# Hàm kiểm tra số nguyên tố
+Hàm isPrime(n):
+    NẾU n < 2:
+        TRẢ VỀ false
+    CHO i TỪ 2 ĐẾN CĂN BẬC HAI CỦA n:
+        NẾU n CHIA HẾT cho i:
+            TRẢ VỀ false
+    TRẢ VỀ true
 
-HÀM printList(head: CON TRỎ ĐẾN Node)
-    temp = head
-    KHI temp KHÔNG BẰNG NULL THÌ
-        IN temp.data
-        temp = temp.next
-    KẾT THÚC KHI
-    IN "NULL"
-KẾT THÚC HÀM
+# Hàm in danh sách
+Hàm printList(head):
+    current_node = head
+    KHI current_node KHÔNG RỖNG:
+        in current_node.data
+        current_node = current_node.next
 
-HÀM isPresent(head: CON TRỎ ĐẾN Node, data: SỐ NGUYÊN) TRẢ VỀ SỐ NGUYÊN
-    temp = head
-    KHI temp KHÔNG BẰNG NULL THÌ
-        NẾU temp.data BẰNG data THÌ TRẢ VỀ 1
-        temp = temp.next
-    KẾT THÚC KHI
-    TRẢ VỀ 0
-KẾT THÚC HÀM
+# Hàm kiểm tra xem dữ liệu có tồn tại trong danh sách không
+Hàm isPresent(head, data):
+    current_node = head
+    KHI current_node KHÔNG RỖNG:
+        NẾU current_node.data BẰNG data:
+            TRẢ VỀ true
+        current_node = current_node.next
+    TRẢ VỀ false
 
-HÀM findBlumPairs(head: CON TRỎ ĐẾN Node, n: SỐ NGUYÊN)
+# Hàm tìm cặp số Blum
+Hàm findBlumPairs(head, n):
     p1 = head
     count = 0
-    KHI p1 KHÔNG BẰNG NULL THÌ
+    KHI p1 KHÔNG RỖNG:
         p2 = p1.next
-        KHI p2 KHÔNG BẰNG NULL THÌ
+        KHI p2 KHÔNG RỖNG:
             sum = p1.data + p2.data
-            NẾU sum < n VÀ isPresent(head, sum) BẰNG 1 THÌ
-                IN "(" + p1.data + ", " + p2.data + ") "
-                count = count + 1
-            KẾT THÚC NẾU
+            NẾU sum < n VÀ isPresent(head, sum):
+                in (p1.data, p2.data)
+                count++
             p2 = p2.next
-        KẾT THÚC KHI
         p1 = p1.next
-    KẾT THÚC KHI
-    NẾU count BẰNG 0 THÌ
-        IN "Không có cặp số hợp lệ"
-    KẾT THÚC NẾU
-    IN "\n"
-KẾT THÚC HÀM
+    NẾU count = 0:
+        in "Không có cặp số hợp lệ"
 
-HÀM main()
-    primeList = NULL
-    productList = NULL
-    n, m: SỐ NGUYÊN
+# Hàm chính
+Hàm main():
+    prime_list = danh sách rỗng
+    product_list = danh sách rỗng
+    ĐỌC n và m từ người dùng
 
-    IN "Nhập giới hạn cho các số Blum (N): "
-    ĐỌC n
-    IN "Nhập số để kiểm tra (M): "
-    ĐỌC m
-
-    // Tạo danh sách các số Blum
-    CHO i TỪ 2 ĐẾN n LÀM TĂNG DẦN
-        NẾU isPrime(i) BẰNG 1 THÌ
-            tmp = primeList
-            KHI tmp KHÔNG BẰNG NULL THÌ
+    // Tạo danh sách số Blum
+    CHO i TỪ 2 ĐẾN n:
+        NẾU isPrime(i):
+            cho tmp trong prime_list:
                 product = tmp.data * i
-                NẾU product >= n THÌ NGHỈ
-                productList = insert(productList, product)
-                tmp = tmp.next
-            KẾT THÚC KHI
+                NẾU product >= n:
+                    NGHỈ
+                insert product vào product_list
             square = i * i
-            NẾU square < n THÌ
-                productList = insert(productList, square)
-            KẾT THÚC NẾU
-            primeList = insert(primeList, i)
-        KẾT THÚC NẾU
-    KẾT THÚC CHO
+            NẾU square < n:
+                insert square vào product_list
+            insert i vào prime_list
 
-    // In ra danh sách các số Blum
-    IN "Các số Blum nhỏ hơn " + n + ":"
-    printList(productList)
+    // In ra danh sách số Blum
+    in "Các số Blum nhỏ hơn n:"
+    printList(product_list)
 
-    // Yêu cầu 1
-    IN "Các cặp số Blum có tổng cũng là số Blum:"
-    findBlumPairs(productList, n)
+    // Tìm cặp số Blum có tổng cũng là số Blum
+    in "Các cặp số Blum có tổng cũng là số Blum:"
+    findBlumPairs(product_list, n)
 
-    // Yêu cầu 2
-    NẾU isPresent(productList, m) BẰNG 1 THÌ
-        IN m + " là số Blum"
-    KHÁC
-        IN m + " không phải là số Blum"
-    KẾT THÚC NẾU
-
-KẾT THÚC HÀM
-
-KẾT THÚC
+    // Kiểm tra xem m có phải là số Blum không
+    NẾU isPresent(product_list, m):
+        in m, "là số Blum"
+    KHÁC:
+        in m, "không phải là số Blum"
