@@ -6,6 +6,7 @@ struct Node {
     struct Node* next;
 };
 
+
 struct Node* createNode(int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
@@ -13,41 +14,24 @@ struct Node* createNode(int data) {
     return newNode;
 }
 
-void insertAtEnd(struct Node** head, int data) {
+struct Node* insert(struct Node* head, int data) {
     struct Node* newNode = createNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-        return;
+    if (head == NULL) {
+        head = newNode;
+        return head;
     }
-
-    struct Node* temp = *head;
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-    temp->next = newNode;
+    struct Node* tmp = head;
+    while (tmp->next != NULL) tmp = tmp->next;
+    tmp->next = newNode;
+    return head;
 }
 
-int SNT(int n) {
+int isPrime(int n) {
     if (n < 2) return 0;
     for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) return 0;
     }
     return 1;
-}
-
-void createProductList(struct Node* primeList, struct Node** productList, int n) {
-    struct Node* ptr1 = primeList;
-    while (ptr1 != NULL) {
-        struct Node* ptr2 = ptr1;
-        while (ptr2 != NULL) {
-            int product = ptr1->data * ptr2->data;
-            if (product < n) {
-                insertAtEnd(productList, product);
-            }
-            ptr2 = ptr2->next;
-        }
-        ptr1 = ptr1->next;
-    }
 }
 
 void printList(struct Node* head) {
@@ -56,33 +40,82 @@ void printList(struct Node* head) {
         printf("%d ", temp->data);
         temp = temp->next;
     }
-    printf("NULL\n");
+    printf("\n");
+}
+
+int isPresent(struct Node* head, int data) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        if (temp->data == data) return 1;
+        temp = temp->next;
+    }
+    return 0;
+}
+
+void findBlumPairs(struct Node* head, int n) {
+    struct Node* p1 = head;
+    int count = 0;
+    while (p1 != NULL) {
+        struct Node* p2 = p1->next;
+        while (p2 != NULL) {
+            int sum = p1->data + p2->data;
+            if (sum < n && isPresent(head, sum)) {
+                printf("(%d, %d) ", p1->data, p2->data);
+                count++;
+            }
+            p2 = p2->next;
+        }
+        p1 = p1->next;
+    }
+    if (count == 0) {
+        printf("No valid pairs found");
+    }
+    printf("\n");
 }
 
 int main() {
     struct Node* primeList = NULL;
     struct Node* productList = NULL;
-    int n;
+    int n, m;
 
-    printf("Enter the upper limit for prime numbers: ");
+    // Limit cho Blum
+    printf("limit for Blum numbers (N): ");
     scanf("%d", &n);
+    printf("number check (M): ");
+    scanf("%d", &m);
 
+    // Tạo list Blum
     for (int i = 2; i < n; i++) {
-        if (SNT(i)) {
-            insertAtEnd(&primeList, i);
+        if (isPrime(i)) {
+            struct Node* tmp = primeList;
+            while (tmp != NULL) {
+                int product = tmp->data * i;
+                if (product >= n) break;
+                productList = insert(productList, product);
+                tmp = tmp->next;
+            }
+            int square = i * i;
+            if (square < n) {
+                productList = insert(productList, square);
+            }
+            primeList = insert(primeList, i);
         }
     }
 
-    printf("Prime numbers less than %d: ", n);
-    printList(primeList);
-
-    printf("Enter the maximum product value: ");
-    scanf("%d", &n);
-
-    createProductList(primeList, &productList, n);
-
-    printf("Products of two prime numbers less than %d: ", n);
+    // In ra số Blume
+    printf("Blum numbers less than %d:\n", n);
     printList(productList);
+
+    // Yêu cầu 1
+    printf("Pairs of Blum numbers whose sum is also a Blum number:\n");
+    findBlumPairs(productList, n);
+
+    // Yêu cầu 2
+    if (isPresent(productList, m)) {
+        printf("%d is a Blum number\n", m);
+    } else {
+        printf("%d is not a Blum number\n", m);
+    }
 
     return 0;
 }
