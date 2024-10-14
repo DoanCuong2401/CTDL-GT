@@ -1,0 +1,1 @@
+gcc bai2.c -o main -o SNT -Iinc -Wall -Wextra -Wconversion -Wpedantic --std=c99
